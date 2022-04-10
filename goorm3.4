@@ -1,0 +1,20 @@
+class Grade:
+	def __init__(self,Course_name,Stu_name,Grade):
+		self.Course_name=Course_name
+		self.Stu_name=Stu_name
+		self.Grade=Grade
+	
+	def get_Course_name(self):
+		print("The course name ",self.Course_name)
+	
+	def get_Stu_name(self):
+		print("The student name ",self.Stu_name)
+
+	def get_Grade(self):
+		print("The grade ",self.Grade)
+
+Grade1=Grade("Data Structure","Lee","A+")
+
+Grade1.get_Course_name()
+Grade1.get_Stu_name()
+Grade1.get_Grade()
