@@ -1,6 +1,7 @@
 class Grade:
-	def __init__(self,Course_name,Stu_name,Grade):
-		self.Course_name=Course_name
+	def __init__(self,Course_name,Stu_name,Grade): #__init__ 은 최초의 메서드에 사용하는 함수 
+	
+		self.Course_name=Course_name  #초기값 또는 갱신값?
 		self.Stu_name=Stu_name
 		self.Grade=Grade
 	
@@ -13,8 +14,8 @@ class Grade:
 	def get_Grade(self):
 		print("The grade ",self.Grade)
 
-Grade1=Grade("Data Structure","Lee","A+")
+Grade1=Grade("Data Structure","Lee","A+")  #Grade1= 3개의 parameter을 가진 Grade라는 class. 
 
-Grade1.get_Course_name()
+Grade1.get_Course_name() #Grade1이 가진 parameter을 사용함, 그 값으로 get_Course_name 함수 이용
 Grade1.get_Stu_name()
 Grade1.get_Grade()
