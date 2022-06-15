@@ -166,6 +166,46 @@ input_score(c,'distance')
 
 list_score = [a,b,c]  #고객이 생각하는 중요도(입력받은 값임)
 
+import numpy
+list1 = [[[5,2,3],[1,5,4],[4,2,3]],[[4,2,3],[2,5,2],[2,3,5]],[[5,3,1],[3,4,3],[3,2,5]],[[4,3,3],[2,5,3],[3,3,4]],[[5,3,1],[3,4,2],[4,2,4]]]
+#부품 고정값 가져오기 A1=[5,2,3],A2=[1,5,4],A3=[4,2,3],B1=[4,2,3],B2=[2,5,2],B3=[2,3,5],C1=[5,3,1],C2=[3,4,3],C3=[3,2,5]
+#D1=[4,3,3],D2=[2,5,3],D3=[3,3,4],E1=[5,3,1],E2=[3,4,2],E3=[4,2,4],
+
+
+def weight_calcaulate(j): #가중치 * 고정값 하는 함수
+    result= j[0]*list_score[0] + j[1]*list_score[1] + j[2]*list_score[2]
+    return result
+
+
+list5=[0,0,0,0,0]
+for i in range(5):
+    if repair_shop[i]==1:
+        list3 = list1[i]
+        k1 = list3[0]
+        k2 = list3[1]
+        k3 = list3[2]
+        
+        K1 = weight_calcaulate(k1)
+        K2 = weight_calcaulate(k2)
+        K3 = weight_calcaulate(k3)
+        
+        list4 = [K1,K2,K3]
+        maxindex = numpy.argmax(list4)+1        
+        list5[i]=maxindex
+
+repair_sh=['A','B','C','D','E']
+print("You should visit ",end='')
+
+repairshop=[]
+for i in range(5):
+    if repair_shop[i]==1:
+        repairshopp=repair_sh[i]+str(list5[i])
+        print(repairshopp,end='  ')        
+        
+        repairshop.append(repairshopp)
+print()
+
+print("Let me recommend the path to visit repair shop(s)")
 
 
 
