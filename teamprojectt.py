@@ -166,3 +166,276 @@ input_score(c,'distance')
 
 list_score = [a,b,c]  #고객이 생각하는 중요도(입력받은 값임)
 
+
+
+
+
+import queue
+
+graph = {}
+infinity = float("inf")
+costs = {}
+parents = {}
+processed = []
+
+# 초기화
+def init():
+    global graph, infinity, costs, parents, processed
+    graph = {} # 간선 정보 입력
+    graph["Start"] = {}
+    graph["A1"] = {}
+    graph["A2"] = {}
+    graph["A3"] = {}
+    graph["B1"] = {}
+    graph["B2"] = {}
+    graph["B3"] = {}
+    graph["C1"] = {}
+    graph["C2"] = {}
+    graph["C3"] = {}
+    graph["D1"] = {}
+    graph["D2"] = {}
+    graph["D3"] = {}
+    graph["E1"] = {}
+    graph["E2"] = {}
+    graph["E3"] = {}
+    graph["Village"] = {}
+
+    graph["Start"]["A1"] = 5
+    graph["Start"]["A2"] = 8
+    graph["Start"]["A3"] = 5
+    graph["Start"]["B1"] = 5
+    graph["Start"]["B2"] = 3
+    graph["Start"]["B3"] = 9
+    graph["Start"]["C1"] = 2
+    graph["Start"]["C2"] = 4
+    graph["Start"]["C3"] = 9
+    graph["Start"]["D1"] = 6
+    graph["Start"]["D2"] = 6
+    graph["Start"]["D3"] = 7
+    graph["Start"]["E1"] = 2
+    graph["Start"]["E2"] = 4
+    graph["Start"]["E3"] = 5
+    graph["Start"]["Village"] = 8
+    
+    graph["A1"]["A2"] = 2
+    graph["A1"]["A3"] = 3
+    graph["A1"]["B1"] = 4
+    graph["A1"]["B2"] = 5
+    graph["A1"]["B3"] = 6
+    graph["A1"]["C1"] = 5
+    graph["A1"]["C2"] = 4
+    graph["A1"]["C3"] = 7
+    graph["A1"]["D1"] = 4
+    graph["A1"]["D2"] = 6
+    graph["A1"]["D3"] = 5
+    graph["A1"]["E1"] = 1
+    graph["A1"]["E2"] = 4
+    graph["A1"]["E3"] = 5
+    graph["A1"]["Village"] = 9
+
+    graph["A2"]["A3"] = 4
+    graph["A2"]["B1"] = 5
+    graph["A2"]["B2"] = 4
+    graph["A2"]["B3"] = 2
+    graph["A2"]["C1"] = 6
+    graph["A2"]["C2"] = 7
+    graph["A2"]["C3"] = 8
+    graph["A2"]["D1"] = 4
+    graph["A2"]["D2"] = 3
+    graph["A2"]["D3"] = 5
+    graph["A2"]["E1"] = 9
+    graph["A2"]["E2"] = 4
+    graph["A2"]["E3"] = 5
+    graph["A2"]["Village"] = 4
+
+    graph["A3"]["B1"] = 5
+    graph["A3"]["B2"] = 8
+    graph["A3"]["B3"] = 4
+    graph["A3"]["C1"] = 6
+    graph["A3"]["C2"] = 1
+    graph["A3"]["C3"] = 4
+    graph["A3"]["D1"] = 5
+    graph["A3"]["D2"] = 7
+    graph["A3"]["D3"] = 8
+    graph["A3"]["E1"] = 6
+    graph["A3"]["E2"] = 1
+    graph["A3"]["E3"] = 5
+    graph["A3"]["Village"] = 2
+    
+
+    graph["B1"]["B2"] = 2
+    graph["B1"]["B3"] = 3
+    graph["B1"]["C1"] = 1
+    graph["B1"]["C2"] = 5
+    graph["B1"]["C3"] = 4
+    graph["B1"]["D1"] = 9
+    graph["B1"]["D2"] = 7
+    graph["B1"]["D3"] = 8
+    graph["B1"]["E1"] = 5
+    graph["B1"]["E2"] = 6
+    graph["B1"]["E3"] = 3
+    graph["B1"]["Village"] = 5
+
+    graph["B2"]["B3"] = 4
+    graph["B2"]["C1"] = 4
+    graph["B2"]["C2"] = 5
+    graph["B2"]["C3"] = 6
+    graph["B2"]["D1"] = 7
+    graph["B2"]["D2"] = 8
+    graph["B2"]["D3"] = 5
+    graph["B2"]["E1"] = 4
+    graph["B2"]["E2"] = 6
+    graph["B2"]["E3"] = 1
+    graph["B2"]["Village"] = 3
+
+    graph["B3"]["C1"] = 3
+    graph["B3"]["C2"] = 2
+    graph["B3"]["C3"] = 5
+    graph["B3"]["D1"] = 4
+    graph["B3"]["D2"] = 7
+    graph["B3"]["D3"] = 8
+    graph["B3"]["E1"] = 5
+    graph["B3"]["E2"] = 6
+    graph["B3"]["E3"] = 2
+    graph["B3"]["Village"] = 1
+
+    graph["C1"]["C2"] = 2
+    graph["C1"]["C3"] = 3
+    graph["C1"]["D1"] = 5
+    graph["C1"]["D2"] = 5
+    graph["C1"]["D3"] = 4
+    graph["C1"]["E1"] = 2
+    graph["C1"]["E2"] = 6
+    graph["C1"]["E3"] = 6
+    graph["C1"]["Village"] = 9
+
+    graph["C2"]["C3"] = 2
+    graph["C2"]["D1"] = 6
+    graph["C2"]["D2"] = 9
+    graph["C2"]["D3"] = 2
+    graph["C2"]["E1"] = 2
+    graph["C2"]["E2"] = 4
+    graph["C2"]["E3"] = 4
+    graph["C2"]["Village"] = 2
+
+    graph["C3"]["D1"] = 5
+    graph["C3"]["D2"] = 6
+    graph["C3"]["D3"] = 2
+    graph["C3"]["E1"] = 2
+    graph["C3"]["E2"] = 7
+    graph["C3"]["E3"] = 9
+    graph["C3"]["Village"] = 1
+
+    graph["D1"]["D2"] = 2
+    graph["D1"]["D3"] = 2
+    graph["D1"]["E1"] = 1
+    graph["D1"]["E2"] = 2
+    graph["D1"]["E3"] = 7
+    graph["D1"]["Village"] = 3
+
+    graph["D2"]["D3"] = 4
+    graph["D2"]["E1"] = 3
+    graph["D2"]["E2"] = 2
+    graph["D2"]["E3"] = 1
+    graph["D2"]["Village"] = 7
+
+    graph["D3"]["E1"] = 3
+    graph["D3"]["E2"] = 2
+    graph["D3"]["E3"] = 2
+    graph["D3"]["Village"] = 1
+
+    graph["E1"]["E2"] = 2
+    graph["E1"]["E3"] = 3
+    graph["E1"]["Village"] = 4
+
+    graph["E2"]["E3"] = 2
+    graph["E2"]["Village"] = 5
+
+    graph["E3"]["Village"] = 2
+
+
+
+    # ----------------------------------------
+    infinity = float("inf")
+    # ------------------------------------------
+    costs = {} # 해당 노드 최단경로 입력
+    costs["Start"] = infinity
+    costs["A1"] = infinity
+    costs["A2"] = infinity
+    costs["A3"] = infinity
+    costs["B1"] = infinity
+    costs["B2"] = infinity
+    costs["B3"] = infinity
+    costs["C1"] = infinity
+    costs["C2"] = infinity
+    costs["C3"] = infinity
+    costs["D1"] = infinity
+    costs["D2"] = infinity
+    costs["D3"] = infinity
+    costs["E1"] = infinity
+    costs["E2"] = infinity
+    costs["E3"] = infinity
+    costs["Village"] = infinity
+    # -------------------------------------------
+    parents = {} # 추적 경로를 위해 부모 설정
+    parents["A1"] = None
+    parents["A2"] = None
+    parents["A3"] = None
+    parents["B1"] = None
+    parents["B2"] = None
+    parents["B3"] = None
+    parents["C1"] = None
+    parents["C2"] = None
+    parents["C3"] = None
+    parents["D1"] = None
+    parents["D2"] = None
+    parents["D3"] = None
+    parents["E1"] = None
+    parents["E2"] = None
+    parents["E3"] = None
+    parents["Village"] = None
+    # -------------------------------------------
+    processed = []
+
+# 최단 경로를 가진 노드를 구한다.
+def find_lowest_cost_node(costs):
+    lowest_cost = float("inf")
+    lowest_cost_node = None
+    for node in costs:
+        cost = costs[node]
+        if cost < lowest_cost and node not in processed:
+            lowest_cost = cost
+            lowest_cost_node = node
+
+    return lowest_cost_node
+
+# 다익스트라 알고리즘
+listcost=[]
+def dijkstra(graph, start, final):
+    cost=0
+    node = start
+    costs[start] = 0
+    while node is not None:
+        cost = costs[node]
+        neighbors = graph[node]
+        for n in neighbors.keys():
+            new_cost = cost + neighbors[n]
+            if costs[n] > new_cost: # 현재 가지고있는 cost보다 new_cost가 더 최단거리라면
+                costs[n] = new_cost # 갱신
+                parents[n] = node
+        processed.append(node)
+        node = find_lowest_cost_node(costs)
+
+    # 경로 추적 로직
+    trace = []
+    current = final
+    while current != start:
+        trace.append(current)
+        current = parents[current]
+    trace.append(start)
+    trace.reverse()
+    print("=== Dijkstra ===")
+    print(start, "에서 ", final, "까지의 정보")
+    print("최단 거리 : ", costs[final])
+    listcost.append(costs[final])
+    print("경로 : ", trace)
