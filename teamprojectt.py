@@ -146,3 +146,23 @@ for i in range(5):
     if repair_shop[i]==1:
         print(repair_sh[i],end=' ')
 print(" repair shop" ,end='\n\n')
+
+
+def input_score(score,crit):
+    
+    if 1<=score<=3:
+        return score
+    else:
+        print ("Please input score from 1 to 3")
+        score=int(input("Score the importantance of {} (1~3)".format(crit)))
+        return input_score(score,crit)
+print('Let me recommend repair shop for each part! Input the score please.')
+a=int(input("Score the importantance of professionality (1~3)"))
+input_score(a,'professionality')
+b=int(input("Score the importantance of price (1~3)"))
+input_score(b,'price')
+c=int(input("Score the importantance of distance (1~3)"))
+input_score(c,'distance')
+
+list_score = [a,b,c]  #고객이 생각하는 중요도(입력받은 값임)
+
