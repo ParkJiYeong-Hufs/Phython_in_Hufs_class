@@ -479,3 +479,20 @@ def dijkstra(graph, start, final):
     print("최단 거리 : ", costs[final])
     listcost.append(costs[final])
     print("경로 : ", trace)
+
+    
+ 
+init()
+repairshop.insert(0,'Start')
+repairshop.append('Village')
+print(repairshop)
+total=0
+for i in range(len(repairshop)+2):
+    if repairshop[i+1]!='Village':
+        dijkstra(graph, repairshop[i],repairshop[i+1])
+    else:
+        dijkstra(graph, repairshop[i],repairshop[i+1])
+        for i in range(len(listcost)):
+            total+=listcost[i]
+        print("Finish The shortest distance is ",total)
+        break
