@@ -49,3 +49,77 @@ array = Car_num_list
 n=len(Car_num_list)
 
 result = binary_search(array,target,0,n-1)
+
+
+
+
+
+
+if result == False:#신규고객
+    print('Welcome!')
+    d_mileage=mileage
+
+    def re_repair(num):
+        for i in range(num+1):
+            repair[i]=1
+ 
+    if 80000<=d_mileage:
+        print("You need to replace 'Air Cleaner', 'Ignition Plug', 'Coolant', 'Fuel Filter', 'Drive Belt', 'Transmission', 'Tires', 'Timing Belt', 'Battery','Clutch Disk'")
+        re_repair(9)
+    elif 60000 <= d_mileage:
+        print("You need to replace 'Air Cleaner', 'Ignition Plug', 'Coolant', 'Fuel Filter', 'Drive Belt', 'Transmission', 'Tires', 'Timing Belt', 'Battery'")
+        re_repair(8)                 #repair[0:8]=1
+    elif 50000 <= d_mileage:
+        print("You need to replace 'Air Cleaner', 'Ignition Plug', 'Coolant', 'Fuel Filter', 'Drive Belt', 'Transmission', 'Tires'")
+        re_repair(6)  
+    elif 30000 <= d_mileage:
+        print("You need to replace 'Air Cleaner', 'Ignition Plug', 'Coolant', 'Fuel Filter', 'Drive Belt', 'Transmission'")
+        re_repair(5)
+    elif 20000 <= d_mileage:
+        print("You need to replace the 'Air Cleaner', 'Ignition Plug', 'Coolant', 'Fuel Filter', 'Drive Belt'")
+        re_repair(4)
+    elif 15000 <= d_mileage :
+        print("You need to replace the 'Air Cleaner', 'Ignition Plug'")
+        re_repair(1)    
+    elif 4000 <= d_mileage :
+        print("You need to replace the 'Air Cleaner'")
+        repair[0]=1    
+    elif 0 <= d_mileage:
+        print("You don't have to replace anything Bye")
+        sys.exit(0)
+    else:
+        print("input again please")
+
+else:    #기존 고객
+    print('Hi Let me show your previous record',end='\n\n\n')
+    
+    car=open('car_record.txt')
+    for i in range(len(Car_num_list)):
+        list1=car.readline()
+        list2=list1.split()
+        if int(list2[0])==num:
+            index=i
+            break
+        else:
+            continue
+    #텍스트 파일 list로 저장해서 이전 마일리지값 불러내기
+    pre_mil=int(list2[1])
+    print('pre_mil: {}, Air Cleaner: {},Ignition Plug: {}, Coolant: {}, Fuel Filter: {},Drive Belt: {}, Transmission: {},Tires: {}, Timing Belt: {},Battery: {},Clutch Disk: {}'.format(list2[1],list2[2],list2[3],list2[4],list2[5],list2[6],list2[7],list2[8],list2[9],list2[10],list2[11]))
+    for i in range(12):
+        list2[i]=int(list2[i])
+    repaircri=[4000,15000,20000,20000,20000,30000,50000,60000,60000,80000]
+    component=['Air Cleaner', 'Ignition Plug', 'Coolant', 'Fuel Filter', 'Drive Belt', 'Transmission', 'Tires', 'Timing Belt', 'Battery','Clutch Disk']
+    num=0
+    for i in range(10):
+        if mileage-list2[i+2]*repaircri[i]>=repaircri[i]:
+            num=num+1
+    if num>0:
+        print("->You need to replace ",end='')
+        for i in range(10):
+            if mileage-list2[i+2]*repaircri[i]>=repaircri[i]:
+                print(component[i],end=' ')
+                repair[i]=1
+    else:
+        print("You don't have to replace anything Bye")
+        sys.exit(0)
+    print()
