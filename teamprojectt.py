@@ -123,3 +123,25 @@ else:    #기존 고객
         print("You don't have to replace anything Bye")
         sys.exit(0)
     print()
+    
+    
+def choice_repair_shop(num1,num2,num):
+    if repair[num1]==1 or repair[num2]==1:
+        repair_shop[num]=1
+    
+repair_shop=[0,0,0,0,0]  #정비소 초기 리스트,가야하는 정비소는 1로 표시
+
+choice_repair_shop(1,9,0)
+choice_repair_shop(2,7,1)
+choice_repair_shop(3,8,2)
+choice_repair_shop(4,0,3)
+choice_repair_shop(5,6,4)
+    
+print()
+print('You should visit ',end='')
+
+for i in range(5):
+    repair_sh=['A','B','C','D','E']
+    if repair_shop[i]==1:
+        print(repair_sh[i],end=' ')
+print(" repair shop" ,end='\n\n')
